@@ -78,7 +78,9 @@ $(function() {
 	key("d", function() { $("#action-debug").click(); });
 	key("p", function() { $("#action-profile").click(); });
 	key("t", function() { $("#action-trace").click(); });
-	key("s", function() { $("#action-disable").click(); });
+	key("l", function() { $("#action-olp-disable-auto-logout").click(); });
+	key("c", function() { $("#action-olp-disable-frontend-permission-check").click(); });
+	/*key("s", function() { $("#action-disable").click(); });*/
 	key("space,enter", function() { $("a:focus").click(); });
 	key("down,right", function()
 	{
