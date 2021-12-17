@@ -28,15 +28,19 @@ $(function() {
 		chrome.tabs.sendMessage(
 				tabs[0].id,
 				{
-					cmd: "getStatus",
+					cmd: "getStatuses",
 					idekey: ideKey,
 					traceTrigger: traceTrigger,
 					profileTrigger: profileTrigger
 				},
 				function(response)
 				{
-					// Highlight the correct option
-					$('a[data-status="' + response.status + '"]').addClass("active");
+					chrome.extension.getBackgroundPage().console.log(response)
+
+					for(let status of response) {
+						// Highlight the correct option
+						$('a[data-status="' + status + '"]').addClass("active");
+					}
 				}
 			);
 	});
@@ -60,10 +64,11 @@ $(function() {
 				function(response)
 				{
 					// Make the backgroundpage update the icon and close the popup
-					chrome.runtime.getBackgroundPage(function(backgroundPage) {
+					/*chrome.runtime.getBackgroundPage(function(backgroundPage) {
 						backgroundPage.updateIcon(response.status, tabs[0].id);
 						window.close();
-					});
+					});*/
+					window.close();
 				}
 			);
 		});

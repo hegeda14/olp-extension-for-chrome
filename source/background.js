@@ -212,7 +212,7 @@ function updateIcon(status, tabId)
     }
 
     // Figure the correct title / image by the given state
-	let image = "images/bug-gray.png";
+	let image = "images/olp-logo-small.png";
     let title = (localStorage.xdebugDisablePopup === '1')
 		? 'Debugging disabled' : 'Debugging, profiling & tracing disabled';
 
@@ -230,6 +230,16 @@ function updateIcon(status, tabId)
 	{
 		title = "Tracing enabled";
 		image = "images/script.png";
+	}
+	else if (status == 4)
+	{
+		title = "Tracing enabled";
+		image = "images/olp-logo-small.png";
+	}
+	else if (status == 5)
+	{
+		title = "Tracing enabled";
+		image = "images/olp-logo-small.png";
 	}
 
 	// Update title

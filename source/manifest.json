@@ -1,24 +1,24 @@
 {
-	"name": "Xdebug Chrome Extension",
-	"description": "Xdebug Chrome Extension, Step Debugging, Profiling and Tracing PHP Web Pages for PHP Developer.",
+	"name": "OLP Extension for Google Chrome",
+	"description": "",
 	"version": "1.0.0",
-	"author": "gxumyd@gmail.com",
+	"author": "",
 
 	"manifest_version": 2,
 	"minimum_chrome_version": "20",
 	"permissions": [ "activeTab", "*://*/*" ],
 	"icons": {
-		"16": "images/icon_16x16.png",
-		"48": "images/icon_48x48.png",
-		"128": "images/icon_128x128.png",
-		"256": "images/icon_256x256.png",
-		"512": "images/icon_256x256.png"
+		"16": "images/olp-logo-small.png",
+		"48": "images/olp-logo-small.png",
+		"128": "images/olp-logo-small.png",
+		"256": "images/olp-logo-small.png",
+		"512": "images/olp-logo-small.png"
 	},
 
 	"options_page": "options.html",
 
 	"browser_action": {
-		"default_icon": "images/bug-gray.png",
+		"default_icon": "images/olp-logo-small.png",
 		"default_title": "Debugging, profiling & tracing disabled",
 		"default_popup" : "popup.html"
 	},

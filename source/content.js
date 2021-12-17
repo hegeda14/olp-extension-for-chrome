@@ -1,4 +1,5 @@
 var xdebug = (function() {
+	var statuses = [];
 	// Set a cookie
 	function setCookie(name, value, days)
 	{
@@ -77,7 +78,7 @@ var xdebug = (function() {
 			}
 
 			// Respond with the current status
-			sendResponse({ status: newStatus });
+			sendResponse(statuses);
 		},
 
 		// Get current state
@@ -88,17 +89,35 @@ var xdebug = (function() {
 			if (getCookie("XDEBUG_SESSION") == idekey)
 			{
 				status = 1;
+				if(!statuses.includes(1)) statuses.push(1);
 			}
-			else if (getCookie("XDEBUG_PROFILE") == profileTrigger)
+			if (getCookie("XDEBUG_PROFILE") == profileTrigger)
 			{
 				status = 2;
+				if(!statuses.includes(2)) statuses.push(2);
 			}
-			else if (getCookie("XDEBUG_TRACE") == traceTrigger)
+			if (getCookie("XDEBUG_TRACE") == traceTrigger)
 			{
 				status = 3;
+				if(!statuses.includes(3)) statuses.push(3);
+			}
+			if (getCookie("OLP_DISABLE_AUTO_LOGOUT") == 'true')
+			{
+				status = 4;
+				if(!statuses.includes(4)) statuses.push(4);
+			}
+			if (getCookie("OLP_DISABLE_FRONTEND_PERMISSION_CHECK") == 'true')
+			{
+				status = 5;
+				if(!statuses.includes(5)) statuses.push(5);
 			}
 
 			return status;
+		},
+
+		getStatuses(idekey, traceTrigger, profileTrigger) {
+			exposed.getStatus(idekey, traceTrigger, profileTrigger);
+			return statuses;
 		},
 
 		// Toggle to the next state
@@ -111,39 +130,51 @@ var xdebug = (function() {
 		// Set the state
 		setStatus : function(status, idekey, traceTrigger, profileTrigger)
 		{
-			if (status == 1)
-			{
-				console.log("设置为XDEBUG_SESSION=" + idekey);
-				// Set debugging on
-				setCookie("XDEBUG_SESSION", idekey, 365);
-				deleteCookie("XDEBUG_PROFILE");
-				deleteCookie("XDEBUG_TRACE");
-			}
-			else if (status == 2)
-			{
-				// Set profiling on
-				deleteCookie("XDEBUG_SESSION");
-				setCookie("XDEBUG_PROFILE", profileTrigger, 365);
-				deleteCookie("XDEBUG_TRACE");
-
-			}
-			else if (status == 3)
-			{
-				// Set tracing on
-				deleteCookie("XDEBUG_SESSION");
-				deleteCookie("XDEBUG_PROFILE");
-				setCookie("XDEBUG_TRACE", traceTrigger, 365);
-			}
-			else
-			{
-				// Disable all Xdebug functions
-				deleteCookie("XDEBUG_SESSION");
-				deleteCookie("XDEBUG_PROFILE");
-				deleteCookie("XDEBUG_TRACE");
+			switch(status) {
+				case 1: {
+					if (!statuses.includes(1)) {
+						setCookie("XDEBUG_SESSION", idekey, 365);
+						statuses.push(1);
+					} else {
+						deleteCookie("XDEBUG_SESSION");
+						statuses = statuses.filter(status => status != 1);
+					}} break;
+				case 2: {
+					if (!statuses.includes(2)) {
+						setCookie("XDEBUG_PROFILE", profileTrigger, 365);
+						statuses.push(2);
+					} else {
+						deleteCookie("XDEBUG_PROFILE");
+						statuses = statuses.filter(status => status != 2);
+					}} break;
+				case 3: {
+					if (!statuses.includes(3)) {
+						setCookie("XDEBUG_TRACE", traceTrigger, 365);
+						statuses.push(3);
+					} else {
+						deleteCookie("XDEBUG_TRACE");
+						statuses = statuses.filter(status => status != 3);
+					}} break;
+				case 4: {
+					if (!statuses.includes(4)) {
+						setCookie("OLP_DISABLE_AUTO_LOGOUT", 'true', 365);
+						statuses.push(4);
+					} else {
+						deleteCookie("OLP_DISABLE_AUTO_LOGOUT");
+						statuses = statuses.filter(status => status != 4);
+					}} break;
+				case 5: {
+					if (!statuses.includes(5)) {
+						setCookie("OLP_DISABLE_FRONTEND_PERMISSION_CHECK", 'true', 365);
+						statuses.push(5);
+					} else {
+						deleteCookie("OLP_DISABLE_FRONTEND_PERMISSION_CHECK");
+						statuses = statuses.filter(status => status != 5);
+					}} break;
 			}
 
 			// Return the new status
-			return exposed.getStatus(idekey, traceTrigger, profileTrigger);
+			return statuses;
 		}
 	};
 
